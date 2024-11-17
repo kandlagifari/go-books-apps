@@ -9,9 +9,7 @@ This is a simple API for managing books and categories built with the Gin framew
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Authentication](#authentication)
-- [Example Request](#example-request)
+- [Negative Test](#negative-test)
 
 ## Installation
 
@@ -26,7 +24,7 @@ This is a simple API for managing books and categories built with the Gin framew
     go mod tidy
     ```
 
-3. Set up your `.env` file with necessary environment variables:
+3. Set up your `config/.env` file with necessary environment variables:
    ```txt
    # PostgreSQL
    DB_HOST=<your_host>
@@ -52,7 +50,7 @@ This is a simple API for managing books and categories built with the Gin framew
 
 ## Usage
 
-### Authentication Endpoints:
+### Endpoint 1: Authentication API
 
 This API uses JWT (JSON Web Tokens) for user authentication. You need to include the token in the `Authorization` header in each request to access protected endpoints.
 
@@ -92,7 +90,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
 
 ---
 
-### API Categories Endpoints
+### Endpoint 2: Categories API
 
 #### 1. Get all Categories
 - **GET** `/api/categories`
@@ -175,17 +173,35 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
   - **Response**:
     ```json
     [
-      {
-        "id": 1,
-        "title": "Book Title",
-        "description": "Book Description",
-        "release_year": 2020,
-        "price": 20000,
-        "total_page": 300,
+     {
+        "id": 3,
+        "title": "Sword Art Online",
+        "description": "Sword Art Online (SAO), one of the most recent games on the console, offers a gateway into the wondrous world of Aincrad, a vivid, medieval landscape where users can do anything within the limits of imagination.",
+        "image_url": "https://cdn.myanimelist.net/images/anime/11/39717.jpg",
+        "release_year": 2012,
+        "price": 16,
+        "total_page": 130,
         "thickness": "tebal",
-        "category_id": 1,
-        "created_at": "2024-01-01T12:00:00Z",
-        "created_by": "admin"
+        "category_id": 2,
+        "created_at": "2024-11-17T20:27:38.3768Z",
+        "created_by": "user1",
+        "modified_at": "2024-11-17T13:27:38.377213Z",
+        "modified_by": ""
+      },
+      {
+        "id": 4,
+        "title": "Sword Art Online II",
+        "description": "Approached by officials to assist in investigating the murders, Kazuto assumes his persona of Kirito once again and logs into Gun Gale Online, intent on stopping the killer.",
+        "image_url": "https://cdn.myanimelist.net/images/anime/1223/121999.jpg",
+        "release_year": 2014,
+        "price": 16,
+        "total_page": 95,
+        "thickness": "tipis",
+        "category_id": 2,
+        "created_at": "2024-11-17T20:27:43.781472Z",
+        "created_by": "user1",
+        "modified_at": "2024-11-17T13:27:43.782148Z",
+        "modified_by": ""
       },
       ...
     ]
@@ -193,7 +209,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
 
 ---
 
-### API Books Endpoints
+### Endpoint: Books API
 
 #### 1. Get All Books
 - **GET** `/api/books`
@@ -297,3 +313,5 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
     ```
 
 ---
+
+## Negative Test
