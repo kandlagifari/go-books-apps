@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kandlagifari/go-books-apps/utils"
@@ -14,6 +15,14 @@ func AuthMiddleware(c *gin.Context) {
 		c.Abort()
 		return
 	}
+
+	parts := strings.SplitN(token, " ", 2)
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token format"})
+		c.Abort()
+		return
+	}
+	token = parts[1]
 
 	_, err := utils.ValidateToken(token)
 	if err != nil {

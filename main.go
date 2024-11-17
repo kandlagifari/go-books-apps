@@ -45,6 +45,7 @@ func main() {
 	router := gin.New()
 
 	routes.RegisterAuthRoutes(router)
+	routes.RegisterCategoryRoutes(router)
 
 	router.Use(gin.Recovery())
 
