@@ -3,7 +3,7 @@
 
 CREATE TABLE books (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR(255),
     image_url VARCHAR(255),
     release_year INT CHECK (release_year >= 1980 AND release_year <= 2024),

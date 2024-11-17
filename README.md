@@ -73,7 +73,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
     }
     ```
 
-#### 1. User login:
+#### 2. User login:
 - **POST** `/api/auth/login`: Logs in a user and provides a JWT token.
   - **Request Body**:
     ```json
@@ -107,7 +107,8 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
         "created_by": "user1",
         "modified_at": "2024-11-17T10:20:22.667011Z",
         "modified_by": ""
-      }
+      },
+      ...
     ]
     ```
 
@@ -117,7 +118,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
   - **Request Body**:
     ```json
     {
-      "name": "New Category"
+      "name": "Science"
     }
     ```
   - **Response**:
@@ -202,15 +203,18 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
     [
       {
         "id": 1,
-        "title": "Book Title",
-        "description": "Book Description",
-        "release_year": 2020,
-        "price": 20000,
-        "total_page": 300,
+        "title": "Dr. Stone",
+        "description": "Blinding green light strikes the Earth and petrifies mankind around the world—turning every single human into stone.",
+        "image_url": "https://cdn.myanimelist.net/images/anime/1613/102576.jpg",
+        "release_year": 2019,
+        "price": 16,
+        "total_page": 120,
         "thickness": "tebal",
         "category_id": 1,
-        "created_at": "2024-01-01T12:00:00Z",
-        "created_by": "admin"
+        "created_at": "2024-11-17T18:50:07.163542Z",
+        "created_by": "user1",
+        "modified_at": "2024-11-17T11:50:07.164832Z",
+        "modified_by": ""
       },
       ...
     ]
@@ -222,11 +226,12 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
   - **Request Body**:
     ```json
     {
-      "title": "Book Title",
-      "description": "Book Description",
-      "release_year": 2020,
-      "price": 20000,
-      "total_page": 300,
+      "title": "Dr. Stone",
+      "description": "Blinding green light strikes the Earth and petrifies mankind around the world—turning every single human into stone.",
+      "image_url": "https://cdn.myanimelist.net/images/anime/1613/102576.jpg",
+      "release_year": 2019,
+      "price": 16,
+      "total_page": 120,
       "category_id": 1
     }
     ```
@@ -243,16 +248,19 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
   - **Response**:
     ```json
     {
-      "id": 1,
-      "title": "Book Title",
-      "description": "Book Description",
-      "release_year": 2020,
-      "price": 20000,
-      "total_page": 300,
-      "thickness": "tebal",
       "category_id": 1,
-      "created_at": "2024-01-01T12:00:00Z",
-      "created_by": "admin"
+      "created_at": "2024-11-17T18:50:07.163542Z",
+      "created_by": "user1",
+      "description": "Blinding green light strikes the Earth and petrifies mankind around the world—turning every single human into stone.",
+      "id": 1,
+      "image_url": "https://cdn.myanimelist.net/images/anime/1613/102576.jpg",
+      "modified_at": "2024-11-17T11:50:07.164832Z",
+      "modified_by": "",
+      "price": 16,
+      "release_year": 2019,
+      "thickness": "tebal",
+      "title": "Dr. Stone",
+      "total_page": 120
     }
     ```
 
@@ -262,12 +270,13 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
   - **Request Body**:
     ```json
     {
-      "title": "Updated Book Title",
-      "description": "Updated Description",
+      "title": "Dr. Stone: Stone Wars",
+      "description": "Senkuu has made it his goal to bring back two million years of human achievement and revive the entirety of those turned to statues.",
+      "image_url": "https://cdn.myanimelist.net/images/anime/1711/110614.jpg",
       "release_year": 2021,
-      "price": 25000,
-      "total_page": 350,
-      "category_id": 2
+      "price": 16,
+      "total_page": 90,
+      "category_id": 1
     }
     ```
   - **Response**:

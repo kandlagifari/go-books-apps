@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kandlagifari/go-books-apps/database"
 	"github.com/kandlagifari/go-books-apps/models"
+	"github.com/lib/pq"
 )
 
 func GetBooks(c *gin.Context) {
@@ -48,7 +49,18 @@ func CreateBook(c *gin.Context) {
 		book.Thickness = "tipis"
 	}
 
-	updatedBy, _ := c.Get("user")
+	updatedBy, exists := c.Get("user")
+	if !exists || updatedBy == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User context missing"})
+		return
+	}
+
+	var categoryExists bool
+	err := database.DbConnection.QueryRow("SELECT EXISTS(SELECT 1 FROM categories WHERE id=$1)", book.CategoryID).Scan(&categoryExists)
+	if err != nil || !categoryExists {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid category_id"})
+		return
+	}
 
 	createdAt := time.Now()
 
@@ -56,8 +68,13 @@ func CreateBook(c *gin.Context) {
 		INSERT INTO books (title, description, image_url, release_year, price, total_page, thickness, category_id, created_by, created_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
-	_, err := database.DbConnection.Exec(query, book.Title, book.Description, book.ImageURL, book.ReleaseYear, book.Price, book.TotalPage, book.Thickness, book.CategoryID, updatedBy, createdAt)
+	_, err = database.DbConnection.Exec(query, book.Title, book.Description, book.ImageURL, book.ReleaseYear, int(book.Price), book.TotalPage, book.Thickness, book.CategoryID, updatedBy, createdAt)
 	if err != nil {
+		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code == "23505" {
+			c.JSON(http.StatusConflict, gin.H{"error": "Book title must be unique"})
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create book"})
 		return
 	}
@@ -76,7 +93,23 @@ func GetBookByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, book)
+	response := gin.H{
+		"id":           book.ID,
+		"title":        book.Title,
+		"description":  book.Description,
+		"image_url":    book.ImageURL,
+		"release_year": book.ReleaseYear,
+		"price":        book.Price,
+		"total_page":   book.TotalPage,
+		"thickness":    book.Thickness,
+		"category_id":  book.CategoryID,
+		"created_at":   book.CreatedAt,
+		"created_by":   book.CreatedBy.String,
+		"modified_at":  book.ModifiedAt,
+		"modified_by":  book.ModifiedBy.String,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func DeleteBook(c *gin.Context) {

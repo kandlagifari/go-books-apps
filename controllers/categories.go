@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kandlagifari/go-books-apps/database"
 	"github.com/kandlagifari/go-books-apps/models"
+	"github.com/lib/pq"
 )
 
 func GetCategories(c *gin.Context) {
@@ -57,6 +58,11 @@ func CreateCategory(c *gin.Context) {
 
 	_, err := database.DbConnection.Exec(query, category.Name, createdBy, createdAt)
 	if err != nil {
+		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code == "23505" {
+			c.JSON(http.StatusConflict, gin.H{"error": "Category name must be unique"})
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create category"})
 		return
 	}
