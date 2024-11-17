@@ -3,8 +3,8 @@
 This is a simple API for managing books and categories built with the Gin framework in Go. The API allows users to:
 
 - Authenticate using JWT tokens.
-- Manage categories.
-- Manage books.
+- Manage categories API.
+- Manage books API.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -70,6 +70,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "user_id": 1
     }
     ```
+    ![Alt text](images/01_post-user-register.png)
 
 #### 2. User Login
 - **POST** `/api/auth/login`: Logs in a user and provides a JWT token.
@@ -87,6 +88,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiZXhwIjoxNzMxOTIzMDExfQ.qFbs28ECUpu0mOoXYo0J0GZ6hrF_7M5K08dLS0ApSi8"
     }
     ```
+    ![Alt text](images/02_post-user-login.png)
 
 ---
 
@@ -109,6 +111,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       ...
     ]
     ```
+    ![Alt text](images/04_get-all-categories.png)
 
 #### 2. Create a Category
 - **POST** `/api/categories`
@@ -125,6 +128,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "message": "Category created successfully"
     }
     ```
+    ![Alt text](images/03_post-category.png)
 
 #### 3. Get Category by ID
 - **GET** `/api/categories/:id`
@@ -140,6 +144,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "name": "Technology"
     }
     ```
+    ![Alt text](images/05_get-category-by-id.png)
 
 #### 4. Update Category by ID
 - **PUT** `/api/categories/:id`
@@ -156,6 +161,10 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "message": "Category updated successfully"
     }
     ```
+    ![Alt text](images/06_put-category-by-id.png)
+    ---
+    **Verify**
+    ![Alt text](images/07_get-category-after-update.png)
 
 #### 5. Delete Category by ID
 - **DELETE** `/api/categories/:id`
@@ -166,6 +175,12 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "message": "Category deleted successfully"
     }
     ```
+    ![Alt text](images/08_delete-category-by-id.png)
+    ---
+    **Verify**
+    ![Alt text](images/09_get-category-after-delete.png)
+    
+    ![Alt text](images/10_get-all-categories-after-delete.png)
 
 #### 6. Get Books by Category ID
 - **GET** `/api/categories/:id/books`
@@ -206,10 +221,11 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       ...
     ]
     ```
+    ![Alt text](images/19_get-books-by-category-id.png)
 
 ---
 
-### Endpoint: Books API
+### Endpoint 3: Books API
 
 #### 1. Get All Books
 - **GET** `/api/books`
@@ -235,6 +251,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       ...
     ]
     ```
+    ![Alt text](images/12_get-all-books.png)
 
 #### 2. Create a Book
 - **POST** `/api/books`
@@ -257,6 +274,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "message": "Book created successfully"
     }
     ```
+    ![Alt text](images/11_post-book.png)
 
 #### 3. Get Book by ID
 - **GET** `/api/books/:id`
@@ -279,6 +297,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "total_page": 120
     }
     ```
+    ![Alt text](images/13_get-book-by-id.png)
 
 #### 4. Update Book by ID
 - **PUT** `/api/books/:id`
@@ -301,6 +320,10 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "message": "Book updated successfully"
     }
     ```
+    ![Alt text](images/14_put-book-by-id.png)
+    ---
+    **Verify**
+    ![Alt text](images/15_get-book-after-update.png)
 
 #### 5. Delete Book by ID
 - **DELETE** `/api/books/:id`
@@ -311,7 +334,52 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
       "message": "Book deleted successfully"
     }
     ```
+    ![Alt text](images/16_delete-book-by-id.png)
+    ---
+    **Verify**
+    ---
+    ![Alt text](images/17_get-book-after-delete.png)
+    
+    ![Alt text](images/18_get-all-books-after-delete.png)
+
+## Negative Test
+
+### Endpoint 1: Authentication API
+
+#### 1. User Login Error
+  ![Alt text](images/00_user-login-error.png)
+  
+#### 2. No Token Authorization Error
+  ![Alt text](images/00_no-token-authorization-error.png)
 
 ---
 
-## Negative Test
+### Endpoint 2: Categories API
+
+#### 1. Category Name Unique Error
+  ![Alt text](images/00_category-name-unique-error.png)
+
+#### 2. Delete Category Not Found Error
+  ![Alt text](images/00_delete-category-not-found-error.png)
+
+#### 3. Update Category Not Found Error
+  ![Alt text](images/00_update-category-not-found-error.png)
+
+---
+
+### Endpoint 3: Books API
+
+#### 1. Book Title Unique Error
+  ![Alt text](images/00_book-title-unique-error.png)
+
+#### 2. Create Book Min Year Error
+  ![Alt text](images/00_create-book-min-year-error.png)
+
+#### 3. Create Book Max Year Error
+  ![Alt text](images/00_create-book-max-year-error.png)
+
+#### 4. Delete Book Not Found Error
+  ![Alt text](images/00_delete-book-not-found-error.png)
+
+#### 5. Update Book Not Found Error
+  ![Alt text](images/00_update-book-not-found-error.png)
