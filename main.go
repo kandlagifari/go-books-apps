@@ -46,6 +46,7 @@ func main() {
 
 	routes.RegisterAuthRoutes(router)
 	routes.RegisterCategoryRoutes(router)
+	routes.RegisterBookRoutes(router)
 
 	router.Use(gin.Recovery())
 
