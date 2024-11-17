@@ -6,6 +6,5 @@ go get -u "github.com/lib/pq"
 go get -u "github.com/rubenv/sql-migrate"
 go get -u "github.com/joho/godotenv"
 go get -u "github.com/dgrijalva/jwt-go"
-go get -u "github.com/golang-jwt/jwt/v4"
 go get -u "golang.org/x/crypto/bcrypt"
 ```
