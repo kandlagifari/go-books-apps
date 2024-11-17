@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kandlagifari/go-books-apps/database"
@@ -47,11 +48,15 @@ func CreateBook(c *gin.Context) {
 		book.Thickness = "tipis"
 	}
 
+	updatedBy, _ := c.Get("user")
+
+	createdAt := time.Now()
+
 	query := `
-		INSERT INTO books (title, description, image_url, release_year, price, total_page, thickness, category_id, created_by)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		INSERT INTO books (title, description, image_url, release_year, price, total_page, thickness, category_id, created_by, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
-	_, err := database.DbConnection.Exec(query, book.Title, book.Description, book.ImageURL, book.ReleaseYear, book.Price, book.TotalPage, book.Thickness, book.CategoryID, "system")
+	_, err := database.DbConnection.Exec(query, book.Title, book.Description, book.ImageURL, book.ReleaseYear, book.Price, book.TotalPage, book.Thickness, book.CategoryID, updatedBy, createdAt)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create book"})
 		return
@@ -90,4 +95,51 @@ func DeleteBook(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Book deleted successfully"})
+}
+
+func UpdateBook(c *gin.Context) {
+	id := c.Param("id")
+	var book models.Book
+
+	if err := c.ShouldBindJSON(&book); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	updatedBy, _ := c.Get("user")
+
+	if book.ReleaseYear < 1980 || book.ReleaseYear > 2024 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Release year must be between 1980 and 2024"})
+		return
+	}
+
+	if book.TotalPage > 100 {
+		book.Thickness = "tebal"
+	} else {
+		book.Thickness = "tipis"
+	}
+
+	var existingBook models.Book
+	err := database.DbConnection.QueryRow("SELECT * FROM books WHERE id=$1", id).
+		Scan(&existingBook.ID, &existingBook.Title, &existingBook.Description, &existingBook.ImageURL, &existingBook.ReleaseYear, &existingBook.Price, &existingBook.TotalPage, &existingBook.Thickness, &existingBook.CategoryID, &existingBook.CreatedAt, &existingBook.CreatedBy, &existingBook.ModifiedAt, &existingBook.ModifiedBy)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Book not found"})
+		return
+	}
+
+	updatedAt := time.Now()
+
+	query := `
+		UPDATE books 
+		SET title=$1, description=$2, image_url=$3, release_year=$4, price=$5, total_page=$6, thickness=$7, category_id=$8, modified_at=$9, modified_by=$10 
+		WHERE id=$11
+	`
+	_, err = database.DbConnection.Exec(query, book.Title, book.Description, book.ImageURL, book.ReleaseYear, book.Price, book.TotalPage, book.Thickness, book.CategoryID, updatedAt, updatedBy, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update book"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Book updated successfully"})
 }
