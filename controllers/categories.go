@@ -81,7 +81,25 @@ func DeleteCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Category deleted successfully"})
 }
 
-// // TODO: Implement After Books API
-// func GetBooksByCategoryID(c *gin.Context) {
+func GetBooksByCategoryID(c *gin.Context) {
+	id := c.Param("id")
 
-// }
+	rows, err := database.DbConnection.Query("SELECT * FROM books WHERE category_id=$1", id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch books"})
+		return
+	}
+	defer rows.Close()
+
+	var books []models.Book
+	for rows.Next() {
+		var book models.Book
+		if err := rows.Scan(&book.ID, &book.Title, &book.Description, &book.ImageURL, &book.ReleaseYear, &book.Price, &book.TotalPage, &book.Thickness, &book.CategoryID, &book.CreatedAt, &book.CreatedBy, &book.ModifiedAt, &book.ModifiedBy); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse book"})
+			return
+		}
+		books = append(books, book)
+	}
+
+	c.JSON(http.StatusOK, books)
+}
