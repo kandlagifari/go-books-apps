@@ -55,7 +55,7 @@ This is a simple API for managing books and categories built with the Gin framew
 This API uses JWT (JSON Web Tokens) for user authentication. You need to include the token in the `Authorization` header in each request to access protected endpoints.
 
 #### 1. User Register
-- **POST** `/api/auth/register`: User register to access API endpoints.
+- **POST** `/api/users/register`: User register to access API endpoints.
   - **Request Body**:
     ```json
     {
@@ -73,7 +73,7 @@ This API uses JWT (JSON Web Tokens) for user authentication. You need to include
     ![Alt text](images/01_post-user-register.png)
 
 #### 2. User Login
-- **POST** `/api/auth/login`: Logs in a user and provides a JWT token.
+- **POST** `/api/users/login`: Logs in a user and provides a JWT token.
   - **Request Body**:
     ```json
     {
